@@ -1,0 +1,34 @@
+version: "3"
+services:
+  influxdb:
+    container_name: influxdb
+    image: influxdb
+    restart: unless-stopped
+    ports:
+      - "8086:8086"
+    volumes:
+      - influxdb-data-vol:/var/lib/influxdb2
+      - influxdb-config-vol:/etc/influxdb2
+    environment:
+      - TZ=Asia/Hong_Kong
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana
+    depends_on:
+      - influxdb
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-vol:/var/lib/grafana
+    environment:
+      - TZ=Asia/Hong_Kong
+
+volumes:
+  influxdb-data-vol:
+    name: influxdb-data-vol
+  influxdb-config-vol:
+    name: influxdb-config-vol
+  grafana-vol:
+    name: grafana-vol
