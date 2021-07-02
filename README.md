@@ -151,15 +151,15 @@
     ```
 
 ## 7. Creating Docker macvlan network (broken on Mac OSX...)
-    - [Set up a PiHole using Docker MacVlan Networks](https://blog.ivansmirnov.name/set-up-pihole-using-docker-macvlan-network/)
-    - [Using Docker macvlan Networks](https://blog.oddbit.com/post/2018-03-12-using-docker-macvlan-networks/)
-    - [macvlan driver doesn't work in MacOS](https://github.com/docker/for-mac/issues/3926)
-    - [macvlan / ipvlan parent interface (e.g. en0 instead of eth0) broken on Mac OSX](https://github.com/moby/libnetwork/issues/2614)
-    ```shell
-    $ docker network create -d macvlan -o parent=en0 \
-        --subnet 192.168.1.0/24 \
-        --gateway 192.168.1.1 \
-        --ip-range 192.168.1.10/28 \
-        --aux-address 'host=192.168.1.11' \
-        macvlan0
-    ```
+* [Set up a PiHole using Docker MacVlan Networks](https://blog.ivansmirnov.name/set-up-pihole-using-docker-macvlan-network/)
+* [Using Docker macvlan Networks](https://blog.oddbit.com/post/2018-03-12-using-docker-macvlan-networks/)
+* [macvlan driver doesn't work in MacOS](https://github.com/docker/for-mac/issues/3926)
+* [macvlan / ipvlan parent interface (e.g. en0 instead of eth0) broken on Mac OSX](https://github.com/moby/libnetwork/issues/2614)
+```shell
+$ docker network create -d macvlan -o parent=en0 \
+    --subnet 192.168.1.0/24 \
+    --gateway 192.168.1.1 \
+    --ip-range 192.168.1.10/28 \
+    --aux-address 'host=192.168.1.11' \
+    macvlan0
+```
