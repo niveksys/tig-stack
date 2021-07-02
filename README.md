@@ -73,14 +73,16 @@
     - Password
     - Inital Organization Name: Homelab
     - Initial Bucket Name: telegraf
+* Date > Buckets > Create Bucket
+    - Name: sensors
 * Date > Tokens > Generate Token > Read / Write Token
     - Description: telegraf's Token
-    - Read > Scoped > Buckets: telegraf
-    - Write > Scoped > Buckets: telegraf
+    - Read > Scoped > Buckets: sensors, telegraf
+    - Write > Scoped > Buckets: sensors, telegraf
 * Date > Tokens > Generate Token > Read / Write Token
     - Description: grafana's Token
-    - Read > Scoped > Buckets: grafana
-    - Write > Scoped > Buckets: grafana 
+    - Read > Scoped > Buckets: sensors, grafana
+    - Write > Scoped > Buckets: sensors, grafana 
 
 ## 4. Install & configure `telegraf` on Mac mini
 
