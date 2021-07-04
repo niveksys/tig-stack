@@ -7,7 +7,8 @@
 - [4. Install & configure `telegraf` on Mac mini](#4-install--configure-telegraf-on-mac-mini)
 - [5. Configure `grafana` container](#5-configure-grafana-container)
 - [6. Backup & Restore Configurations](#6-backup--restore-configurations)
-- [7. Creating Docker macvlan network (broken on Mac OSX...)](#7-creating-docker-macvlan-network-broken-on-mac-osx)
+- [7. Query and Delete with InfluxDB CLI](#7-query-and-delete-with-influxdb-cli)
+- [8. Creating Docker macvlan network (broken on Mac OSX...)](#8-creating-docker-macvlan-network-broken-on-mac-osx)
 
 ## 1. Configure Mac mini as remote Docker Host
 
@@ -152,7 +153,34 @@
     $ scp telegraf.conf mac-mini.local:/usr/local/etc
     ```
 
-## 7. Creating Docker macvlan network (broken on Mac OSX...)
+## 7. Query and Delete with InfluxDB CLI
+
+* Run an interactive `bash` shell in `influxdb` container:
+    ```shell
+    $ docker exec -it influxdb /bin/bash
+    ```
+* Create an influx CLI config and set it as active:
+    ```shell
+    $ influx config create --config-name local-config \
+        --host-url http://localhost:8086 \
+        --org Homelab \
+        --token <your-auth-token> \
+        --active
+    ```
+* Query with Flux:
+    ```shell
+    $ influx query 'from(bucket:"sensors") |> range(start: -1mo) |> filter(fn: (r) => r["topic"] =~ /sensors\/openaq/)'
+    ```
+* Delete measurments on specific topic with InfluxDB CLI:
+    ```shell
+    $ influx delete --org Homelab --bucket sensors \
+        --start '1970-01-01T00:00:00Z' \
+        --stop $(date +"%Y-%m-%dT%H:%M:%SZ") \
+        --predicate 'topic="sensors/openaq/aqi"'
+    ```
+
+## 8. Creating Docker macvlan network (broken on Mac OSX...)
+
 * [Set up a PiHole using Docker MacVlan Networks](https://blog.ivansmirnov.name/set-up-pihole-using-docker-macvlan-network/)
 * [Using Docker macvlan Networks](https://blog.oddbit.com/post/2018-03-12-using-docker-macvlan-networks/)
 * [macvlan driver doesn't work in MacOS](https://github.com/docker/for-mac/issues/3926)
