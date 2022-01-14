@@ -23,12 +23,12 @@
     $ ssh-add -l
     $ ssh-add -D
     $ ssh-add -K ~/.ssh/id_ed25519_nas
-    $ ssh-copy-id -i ~/.ssh/id_ed25519_nas user@nas.local
-    $ ssh user@nas.local
+    $ ssh-copy-id -i ~/.ssh/id_ed25519_nas -p <port> user@nas.local
+    $ ssh user@nas.local <port>
     ```
 * Add the docker group, with the administrator user as a member:
     ```shell
-    $ ssh user@nas.local
+    $ ssh user@nas.local <port>
     $ grep -i docker /etc/group
     $ sudo synogroup --add docker $(whoami)
     ```
@@ -46,11 +46,11 @@
         ```
 * Connect docker remote host with SSH connection
     ```shell
-    $ docker -H ssh://user@nas.local ps
+    $ docker -H ssh://user@nas.local:port ps
     ```
 * Connect docker remote host with Context
     ```shell
-    $ docker context create nas --docker "host=ssh://user@nas.local"
+    $ docker context create nas --docker "host=ssh://user@nas.local:port"
     $ docker context ls
     $ docker context use nas
     $ docker context ls
