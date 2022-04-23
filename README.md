@@ -5,12 +5,13 @@
 - [2. Run `influxdb` & `grafana` containers on Synology NAS](#2-run-influxdb--grafana-containers-on-synology-nas)
 - [3. Configure `influxdb` container](#3-configure-influxdb-container)
 - [4. Configure `grafana` container](#4-configure-grafana-container)
-- [5. Backup & Restore Data Volumes](#5-backup--restore-data-volumes)
-- [6. Query and Delete with InfluxDB CLI](#6-query-and-delete-with-influxdb-cli)
-- [7. Configure Mac mini as remote Docker Host](#7-configure-mac-mini-as-remote-docker-host)
-- [8. Install & configure `telegraf` on Mac mini](#8-install--configure-telegraf-on-mac-mini)
-- [9. Backup & Restore `telegraf` Configurations](#9-backup--restore-telegraf-configurations)
-- [10. Creating Docker macvlan network (broken on Mac OSX...)](#10-creating-docker-macvlan-network-broken-on-mac-osx)
+- [5. Upgrade `influxdb` & `grafana` containers on Synology NAS](#5-upgrade-influxdb--grafana-containers-on-synology-nas)
+- [6. Backup & Restore Data Volumes](#6-backup--restore-data-volumes)
+- [7. Query and Delete with InfluxDB CLI](#7-query-and-delete-with-influxdb-cli)
+- [8. Configure Mac mini as remote Docker Host](#8-configure-mac-mini-as-remote-docker-host)
+- [9. Install & configure `telegraf` on Mac mini](#9-install--configure-telegraf-on-mac-mini)
+- [10. Backup & Restore `telegraf` Configurations](#10-backup--restore-telegraf-configurations)
+- [11. Creating Docker macvlan network (broken on Mac OSX...)](#11-creating-docker-macvlan-network-broken-on-mac-osx)
 
 ## 1. Configure Synology NAS as remote Docker Host
 
@@ -111,7 +112,19 @@
     - Organization name: Homelab
     - Home Dashboard: Coziee
 
-## 5. Backup & Restore Data Volumes
+## 5. Upgrade `influxdb` & `grafana` containers on Synology NAS
+
+* Upgrade `influxdb` & `grafana` with docker compose on Synology NAS
+    ```shell
+    $ cd ~/Workspaces/tig-stack
+    $ docker context use nas
+    $ docker compose pull
+    $ docker compose up -d
+    $ docker compose logs -f
+    $ docker image prune -a
+    ```
+
+## 6. Backup & Restore Data Volumes
 
 * Backup data volumes:
     ```shell
@@ -137,7 +150,7 @@
     $ docker exec -it grafana sh
     ```
 
-## 6. Query and Delete with InfluxDB CLI
+## 7. Query and Delete with InfluxDB CLI
 
 * Run an interactive `bash` shell in `influxdb` container:
     ```shell
@@ -163,7 +176,7 @@
         --predicate 'topic="sensors/openaq/aqi"'
     ```
 
-## 7. Configure Mac mini as remote Docker Host
+## 8. Configure Mac mini as remote Docker Host
 
 * Generate key pairs and copy public key to remote host
     ```shell
@@ -209,7 +222,7 @@
     $ docker ps
     ```
 
-## 8. Install & configure `telegraf` on Mac mini
+## 9. Install & configure `telegraf` on Mac mini
 
 * Install via Homebrew:
     ```shell
@@ -246,7 +259,7 @@
     $ brew services restart telegraf
     ```
 
-## 9. Backup & Restore `telegraf` Configurations
+## 10. Backup & Restore `telegraf` Configurations
 
 * Backup configuration files:
     ```shell
@@ -259,7 +272,7 @@
     $ scp telegraf.conf mac-mini.local:/usr/local/etc
     ```
 
-## 10. Creating Docker macvlan network (broken on Mac OSX...)
+## 11. Creating Docker macvlan network (broken on Mac OSX...)
 
 * [Set up a PiHole using Docker MacVlan Networks](https://blog.ivansmirnov.name/set-up-pihole-using-docker-macvlan-network/)
 * [Using Docker macvlan Networks](https://blog.oddbit.com/post/2018-03-12-using-docker-macvlan-networks/)
